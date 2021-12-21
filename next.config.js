@@ -8,3 +8,13 @@ module.exports = {
 		return config;
 	},
 };
+
+module.exports = {
+	i18n: {
+		locales: ["en-US"],
+		defaultLocale: "en-US",
+	},
+	images: {
+		domains: ["firebasestorage.googleapis.com"],
+	},
+};

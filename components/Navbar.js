@@ -22,7 +22,7 @@ const Navbar = () => {
 				</button>
 			</div>
 			<Popover
-				className="relative justify-between w-full md:hidden "
+				className="relative flex justify-between w-full md:hidden"
 				style={{ zIndex: "2" }}
 			>
 				<UnSplashLogo />
@@ -59,7 +59,7 @@ const Navbar = () => {
 							<input
 								id="search"
 								placeholder="Search by name"
-								className="w-full text-gray-700"
+								className="w-full text-gray-700 outline-none"
 							></input>
 						</form>
 						<button className="p-4 text-base font-bold text-center text-white bg-green-500 rounded-xl">

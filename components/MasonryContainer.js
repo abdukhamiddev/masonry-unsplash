@@ -1,22 +1,35 @@
+import { getDownloadURL, listAll } from "firebase/storage";
+import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
+import { storageRef } from "../firebase/firebase";
 
 const MasonryContainer = () => {
+	const [files, setFiles] = useState();
+
+	useEffect(() => {
+		const fetchImages = async () => {
+			let result = await listAll(storageRef);
+			let urlPromises = result.items.map((imageRef) =>
+				getDownloadURL(imageRef)
+			);
+			return Promise.all(urlPromises);
+		};
+
+		const loadImages = async () => {
+			const urls = await fetchImages();
+			setFiles(urls);
+		};
+		loadImages();
+	}, []);
 	return (
 		<Masonry
 			breakpointCols={3}
 			className="pt-10 my-masonry-grid"
 			columnClassName="my-masonry-grid_column"
 		>
-			<h1 className="h-[400px] bg-gray-400 rounded-xl">1</h1>
-			<h1 className="h-[600px] bg-gray-500 ">2</h1>
-
-			<h1 className="h-[200px] bg-gray-200 ">3</h1>
-			<h1 className="h-[300px] bg-gray-900 ">4</h1>
-			<h1 className="h-[300px] bg-gray-900 ">5</h1>
-			<h1 className="h-[300px] bg-gray-900 ">6</h1>
-			<h1 className="h-[200px] bg-gray-200 ">3</h1>
-			<h1 className="h-[200px] bg-gray-200">3</h1>
-			<h1 className="h-[400px] bg-gray-400 rounded-xl">1</h1>
+			{files?.map((file) => (
+				<img key={file} src={file} layout="fill"></img>
+			))}
 		</Masonry>
 	);
 };
