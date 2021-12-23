@@ -1,6 +1,6 @@
 import UnSplashLogo from "../public/my_unsplash_logo.svg";
 import LabelSvg from "../public/label.svg";
-import Hamburger from "../public/menu.svg";
+
 import { Popover, Transition } from "@headlessui/react";
 const Navbar = () => {
 	return (
