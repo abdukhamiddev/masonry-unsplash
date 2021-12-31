@@ -96,8 +96,12 @@ const MasonryContainer = () => {
 					url: url.replace(
 						"https://firebasestorage.googleapis.com",
 						`https://ik.imagekit.io/u9es71stuug/tr:${
-							window.innerWidth < 525 ? "w-515" : "w-315"
+							window.innerWidth < 525 ? "w-515" : "w-437"
 						},c-at_min,fo-auto,q-80`
+					),
+					blur: url.replace(
+						"https://firebasestorage.googleapis.com",
+						`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
 					),
 					metadata: metadata[index],
 				};
@@ -114,8 +118,7 @@ const MasonryContainer = () => {
 
 	const breakpointColumnsObj = {
 		default: 3,
-		2200: 5,
-		1600: 4,
+
 		1100: 3,
 		700: 2,
 		500: 1,
@@ -147,9 +150,12 @@ const MasonryContainer = () => {
 					<>
 						<div className="imageContainer">
 							<NextImage
+								className="nextImage shadow-sm"
 								src={file.url}
-								width={400}
-								height={400}
+								placeholder="blur"
+								blurDataURL={file.blur}
+								width={`${file.metadata?.customMetadata?.width || "500"}`}
+								height={`${file.metadata?.customMetadata?.height || "500"}`}
 								alt="Unsplash"
 							/>
 							<div className="overlay">{file.metadata.name}</div>
