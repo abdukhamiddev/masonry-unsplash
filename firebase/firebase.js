@@ -6,6 +6,7 @@ import {
 	listAll,
 	getDownloadURL,
 	getMetadata,
+	uploadBytesResumable,
 } from "firebase/storage";
 
 const firebaseConfig = {
@@ -21,4 +22,12 @@ const firebase = initializeApp(firebaseConfig);
 
 const storage = getStorage();
 const storageRef = ref(storage);
-export { firebase, storageRef, listAll, getDownloadURL, getMetadata };
+export {
+	firebase,
+	storageRef,
+	listAll,
+	getDownloadURL,
+	getMetadata,
+	uploadBytesResumable,
+	ref,
+};
