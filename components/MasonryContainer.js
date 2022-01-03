@@ -4,7 +4,6 @@ import {
 	getMetadata,
 	listAll,
 	ref,
-	uploadBytesResumable,
 } from "firebase/storage";
 import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
@@ -14,69 +13,10 @@ import { useDispatch } from "react-redux";
 import { setFiles } from "../redux/filesSlice";
 
 const MasonryContainer = () => {
+	const dispatch = useDispatch();
 	const storage = getStorage();
 	const storageRef = ref(storage);
-
 	const files = useSelector((state) => state.files.files);
-	const selectedFile = useSelector((state) => state.files.selectedFile);
-	const dispatch = useDispatch();
-
-	const uploadHandler = async (file) => {
-		const metadata = {
-			contentType: "/image",
-			customMetaData: {
-				width: 0,
-				height: 0,
-			},
-		};
-
-		const myImage = new Image();
-		myImage.src = window.URL.createObjectURL(file);
-		myImage.onload = function () {
-			const width = myImage.naturalWidth;
-			const height = myImage.naturalHeight;
-
-			metadata.customMetaData.width = myImage.naturalWidth;
-			metadata.customMetaData.height = myImage.naturalHeight;
-
-			window.URL.revokeObjectURL(myImage.src);
-			console.log(width, height);
-
-			const storageRef = ref(storage, `/${file.name}`);
-
-			const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-
-			uploadTask.on(
-				"state_changed",
-				(snapshot) => {
-					switch (snapshot.state) {
-						case "paused":
-							console.log("Upload is paused");
-							break;
-						case "running":
-							console.log("Upload is running");
-							break;
-						default:
-							break;
-					}
-				},
-				(error) => {
-					switch (error.code) {
-						case "storage/unauthorized":
-							break;
-						case "storage/canceled":
-							break;
-
-						case "storage/unknown":
-							break;
-
-						default:
-							break;
-					}
-				}
-			);
-		};
-	};
 
 	useEffect(() => {
 		const fetchImages = async () => {
@@ -133,22 +73,6 @@ const MasonryContainer = () => {
 	};
 	return (
 		<>
-			<form>
-				<input
-					type="file"
-					accept="image/*"
-					onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))}
-				/>
-				<button
-					type="submit"
-					onClick={(e) => {
-						e.preventDefault();
-						uploadHandler(selectedFile);
-					}}
-				>
-					Upload File
-				</button>
-			</form>
 			<Masonry
 				breakpointCols={breakpointColumnsObj}
 				className="pt-10 my-masonry-grid"

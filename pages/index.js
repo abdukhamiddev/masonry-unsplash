@@ -3,6 +3,7 @@ import MasonryContainer from "../components/MasonryContainer";
 import Navbar from "../components/Navbar";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
+import AddPhotoModal from "../components/AddPhotoModal";
 
 export default function Home() {
 	return (
@@ -13,6 +14,7 @@ export default function Home() {
 					<meta name="description" content="unsplash styled image gallery" />
 				</Head>
 				<Navbar />
+				<AddPhotoModal isOpen={false} />
 				<MasonryContainer />
 			</div>
 		</Provider>
