@@ -1,14 +1,5 @@
 import { initializeApp } from "firebase/app";
 
-import {
-	getStorage,
-	ref,
-	listAll,
-	getDownloadURL,
-	getMetadata,
-	uploadBytesResumable,
-} from "firebase/storage";
-
 const firebaseConfig = {
 	apiKey: "AIzaSyDi-Rm5JKIBDgOit1sxLLRB1KexpkeoR3Y",
 	authDomain: "my-unsplash-afddb.firebaseapp.com",
@@ -20,14 +11,4 @@ const firebaseConfig = {
 
 const firebase = initializeApp(firebaseConfig);
 
-const storage = getStorage();
-const storageRef = ref(storage);
-export {
-	firebase,
-	storageRef,
-	listAll,
-	getDownloadURL,
-	getMetadata,
-	uploadBytesResumable,
-	ref,
-};
+export { firebase };

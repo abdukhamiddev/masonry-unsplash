@@ -1,21 +1,27 @@
 import {
 	getStorage,
-	storageRef,
 	getDownloadURL,
 	getMetadata,
 	listAll,
 	ref,
 	uploadBytesResumable,
-} from "../firebase/firebase";
+} from "firebase/storage";
 import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
 import NextImage from "next/image";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setFiles } from "../redux/filesSlice";
 
 const MasonryContainer = () => {
-	const [files, setFiles] = useState();
-	const [selectedFile, setSelectedFile] = useState();
+	const storage = getStorage();
+	const storageRef = ref(storage);
 
-	const upload = async (file) => {
+	const files = useSelector((state) => state.files.files);
+	const selectedFile = useSelector((state) => state.files.selectedFile);
+	const dispatch = useDispatch();
+
+	const uploadHandler = async (file) => {
 		const metadata = {
 			contentType: "/image",
 			customMetaData: {
@@ -29,12 +35,13 @@ const MasonryContainer = () => {
 		myImage.onload = function () {
 			const width = myImage.naturalWidth;
 			const height = myImage.naturalHeight;
-			metadata.customMetaData.width = width;
-			metadata.customMetaData.height = height;
+
+			metadata.customMetaData.width = myImage.naturalWidth;
+			metadata.customMetaData.height = myImage.naturalHeight;
+
 			window.URL.revokeObjectURL(myImage.src);
 			console.log(width, height);
 
-			const storage = getStorage();
 			const storageRef = ref(storage, `/${file.name}`);
 
 			const uploadTask = uploadBytesResumable(storageRef, file, metadata);
@@ -108,13 +115,14 @@ const MasonryContainer = () => {
 			});
 
 			images.sort(
-				(a, b) => new Date(b.metadata.updated) - new Date(a.metadata.upda)
+				(a, b) =>
+					new Date(b?.metadata?.updated) - new Date(a?.metadata?.updated)
 			);
 
-			setFiles(images);
+			dispatch(setFiles(images));
 		};
 		loadImages();
-	}, []);
+	}, [dispatch, storageRef]);
 
 	const breakpointColumnsObj = {
 		default: 3,
@@ -129,13 +137,13 @@ const MasonryContainer = () => {
 				<input
 					type="file"
 					accept="image/*"
-					onChange={(e) => setSelectedFile(e.target.files[0])}
+					onChange={(e) => dispatch(setSelectedFile(e.target.files[0]))}
 				/>
 				<button
 					type="submit"
 					onClick={(e) => {
 						e.preventDefault();
-						upload(selectedFile);
+						uploadHandler(selectedFile);
 					}}
 				>
 					Upload File
@@ -150,7 +158,7 @@ const MasonryContainer = () => {
 					<>
 						<div className="imageContainer">
 							<NextImage
-								className="nextImage shadow-sm"
+								className="shadow-sm nextImage"
 								src={file.url}
 								placeholder="blur"
 								blurDataURL={file.blur}

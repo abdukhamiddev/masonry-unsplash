@@ -5,7 +5,7 @@ const initialState = {
 	selectedFile: null,
 };
 
-export const fileslice = createSlice({
+export const filesSlice = createSlice({
 	name: "files",
 	initialState,
 	reducers: {
@@ -13,10 +13,10 @@ export const fileslice = createSlice({
 			state.files = action.payload;
 		},
 		setSelectedFile: (state, action) => {
-			stete.selectedFile = action.payload;
+			state.selectedFile = action.payload;
 		},
 	},
 });
 
-export const { setFiles, setSelectedFile } = fileslice.actions;
-export default fileSlice.reducer;
+export const { setFiles, setSelectedFile } = filesSlice.actions;
+export default filesSlice.reducer;
