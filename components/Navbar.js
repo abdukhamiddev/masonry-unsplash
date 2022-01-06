@@ -21,7 +21,7 @@ const Navbar = () => {
 					/>
 				</form>
 				<button
-					className="p-4 ml-auto text-base font-bold text-center text-white bg-green-500 rounded-xl"
+					className="ml-auto btn-primary ripple"
 					onClick={() => dispatch(setIsOpen(true))}
 				>
 					Add a photo
@@ -32,7 +32,10 @@ const Navbar = () => {
 				style={{ zIndex: "2" }}
 			>
 				<UnSplashLogo />
-				<Popover.Button>
+				<Popover.Button
+					className="text-gray-800 transition-all hover:text-green-600"
+					aria-label="Show Menu"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						className="w-10 h-10"
@@ -66,10 +69,10 @@ const Navbar = () => {
 								id="search"
 								placeholder="Search by name"
 								className="w-full text-gray-700 outline-none"
-							></input>
+							/>
 						</form>
 						<button
-							className="p-4 text-base font-bold text-center text-white bg-green-500 rounded-xl"
+							className="btn-primary ripple"
 							onClick={() => dispatch(setIsOpen(true))}
 						>
 							Add a photo
