@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addFile } from "../redux/filesSlice";
 
-import { setIsOpen } from "../redux/modalSlice";
+import { setIsAddOpen, setIsDeleteOpen } from "../redux/modalSlice";
 
 const AddPhotoModal = () => {
 	const [file, setFile] = useState(null);
@@ -18,7 +18,7 @@ const AddPhotoModal = () => {
 
 	const dispatch = useDispatch();
 
-	const isOpen = useSelector((state) => state.modal.isOpen);
+	const isAddOpen = useSelector((state) => state.modal.isAddOpen);
 
 	const storage = getStorage();
 	const storageRef = ref(storage, `/${fileLabel}`);
@@ -107,12 +107,12 @@ const AddPhotoModal = () => {
 	useEffect(() => {
 		setFile(null);
 		setFileLabel(null);
-	}, [isOpen]);
+	}, [isAddOpen]);
 
 	return (
 		<Dialog
-			open={isOpen}
-			onClose={() => dispatch(setIsOpen(false))}
+			open={isAddOpen}
+			onClose={() => dispatch(setIsAddOpen(false))}
 			className="fixed inset-0 z-10 overflow-y-auto"
 		>
 			<div className="flex items-center justify-center min-h-screen">
@@ -147,7 +147,7 @@ const AddPhotoModal = () => {
 								type="submit"
 								onClick={(e) => {
 									e.preventDefault();
-									dispatch(setIsOpen(false));
+									dispatch(setIsAddOpen(false));
 								}}
 								className="p-4 text-base text-center text-gray-400 bg-transparent rounded-xl"
 							>
@@ -158,7 +158,7 @@ const AddPhotoModal = () => {
 								onClick={(e) => {
 									e.preventDefault();
 									file && fileLabel && uploadHandler(file);
-									dispatch(setIsOpen(false));
+									dispatch(setIsAddOpen(false));
 								}}
 								className="btn-primary ripple"
 							>

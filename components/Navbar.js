@@ -3,7 +3,7 @@ import LabelSvg from "../public/label.svg";
 
 import { Popover, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
-import { setIsOpen } from "../redux/modalSlice";
+import { setIsAddOpen } from "../redux/modalSlice";
 const Navbar = () => {
 	const dispatch = useDispatch();
 	return (
@@ -22,7 +22,7 @@ const Navbar = () => {
 				</form>
 				<button
 					className="ml-auto btn-primary ripple"
-					onClick={() => dispatch(setIsOpen(true))}
+					onClick={() => dispatch(setIsAddOpen(true))}
 				>
 					Add a photo
 				</button>
@@ -73,7 +73,7 @@ const Navbar = () => {
 						</form>
 						<button
 							className="btn-primary ripple"
-							onClick={() => dispatch(setIsOpen(true))}
+							onClick={() => dispatch(setIsAddOpen(true))}
 						>
 							Add a photo
 						</button>

@@ -1,5 +1,8 @@
 import "../styles/global.css";
 import "@fontsource/noto-sans";
+import "@fontsource/montserrat/700.css";
+import "@fontsource/montserrat/500.css";
+
 import { firebase } from "../firebase/firebase";
 
 function MyApp({ Component, pageProps }) {

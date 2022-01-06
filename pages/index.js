@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
 import AddPhotoModal from "../components/AddPhotoModal";
+import DeletePhotoModal from "../components/DeletePhotoModal";
 
 export default function Home() {
 	return (
@@ -15,6 +16,7 @@ export default function Home() {
 				</Head>
 				<Navbar />
 				<AddPhotoModal />
+				<DeletePhotoModal />
 				<MasonryContainer />
 			</div>
 		</Provider>

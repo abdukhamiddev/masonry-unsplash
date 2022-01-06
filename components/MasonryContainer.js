@@ -12,6 +12,7 @@ import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { removeFile, setFiles } from "../redux/filesSlice";
+import { setIsDeleteOpen } from "../redux/modalSlice";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const MasonryContainer = () => {
 		{
 			setMasonryFiles(
 				files?.map((file) => (
-					<div className="imageContainer">
+					<div className="imageContainer" key={file.metadata.name}>
 						<NextImage
 							className="shadow-sm nextImage"
 							src={file.url}
@@ -81,20 +82,23 @@ const MasonryContainer = () => {
 							height={`${file.metadata?.customMetadata?.height || "500"}`}
 							alt="Unsplash"
 						/>
-						<div className="flex flex-col p-4 overlay place-content-between">
+						<div className="flex flex-col p-4 font-montserrat overlay place-content-between">
 							<button
-								className="px-4 py-1 ml-auto text-red-500  border-2 border-red-600 rounded-xl hover:text-white hover:bg-red-500 text-[16px] font-semibold duration-[0.33s] transition-colors"
+								className="ml-auto btn-danger"
 								onClick={() => {
 									const storage = getStorage();
 									const deleteRef = ref(storage, `${file?.metadata.name}`);
 
-									deleteObject(deleteRef)
-										.then(() => {
-											dispatch(removeFile(deleteRef));
-										})
-										.catch((error) => {
-											console.log(error);
-										});
+									const del = () => {
+										deleteObject(deleteRef)
+											.then(() => {
+												dispatch(removeFile(deleteRef));
+											})
+											.catch((error) => {
+												console.log(error);
+											});
+									};
+									dispatch(setIsDeleteOpen([true, del, file?.metadata?.name]));
 								}}
 							>
 								Delete
