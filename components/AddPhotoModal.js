@@ -25,7 +25,7 @@ const AddPhotoModal = () => {
 
 	const uploadHandler = async (file) => {
 		const metadata = {
-			contentType: "/image",
+			contentType: "image/*",
 			customMetaData: {
 				width: 0,
 				height: 0,
@@ -93,8 +93,8 @@ const AddPhotoModal = () => {
 								metadata: {
 									name: fileLabel,
 									customMetadata: {
-										width: metadata.customMetaData.width,
-										height: metadata.customMetaData.height,
+										width: metadata?.customMetadata?.width,
+										height: metadata?.customMetadata?.height,
 									},
 								},
 							})
@@ -158,6 +158,7 @@ const AddPhotoModal = () => {
 								onClick={(e) => {
 									e.preventDefault();
 									file && fileLabel && uploadHandler(file);
+									dispatch(setIsOpen(false));
 								}}
 								className="btn-primary ripple"
 							>
