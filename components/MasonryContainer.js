@@ -30,23 +30,17 @@ const MasonryContainer = () => {
 		const fetchImages = async () => {
 			let url;
 			let result = await listAll(storageRef);
-			let urlPromises = result.items.map(
-				(imageRef) => (url = getDownloadURL(imageRef))
-			);
-			return Promise.all(urlPromises);
-		};
-		const fetchMetadata = async () => {
-			let result = await listAll(storageRef);
-			let metadataPromises = result.items.map((imageRef) =>
-				getMetadata(imageRef)
-			);
-			return Promise.all(metadataPromises);
-		};
 
-		const loadImages = async () => {
-			const urls = await fetchImages();
-			const metadata = await fetchMetadata();
-			let images = urls.map((url, index) => {
+			const urls = await Promise.all(
+				result.items.map((imageRef) => (url = getDownloadURL(imageRef)))
+			);
+
+			const metadata = await Promise.all(
+				result.items.map((imageRef) => getMetadata(imageRef))
+			);
+			console.log(urls, metadata, images);
+
+			const images = urls.map((url, index) => {
 				return {
 					url: url.replace(
 						"https://firebasestorage.googleapis.com",
@@ -58,7 +52,10 @@ const MasonryContainer = () => {
 						"https://firebasestorage.googleapis.com",
 						`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
 					),
-					metadata: metadata[index],
+					name: metadata[index].name,
+					size: metadata[index].size,
+					updated: metadata[index].updated,
+					customMetadata: metadata[index].customMetadata,
 				};
 			});
 
@@ -66,24 +63,23 @@ const MasonryContainer = () => {
 				(a, b) =>
 					new Date(b?.metadata?.updated) - new Date(a?.metadata?.updated)
 			);
-
 			dispatch(setFiles(images));
 		};
-		loadImages();
+		fetchImages();
 	}, [dispatch]);
 
 	useEffect(() => {
 		{
 			setMasonryFiles(
 				files?.map((file) => (
-					<div className="imageContainer" key={file.metadata.name}>
+					<div className="imageContainer" key={file.name}>
 						<NextImage
 							className="shadow-sm nextImage"
 							src={file.url}
 							placeholder="blur"
 							blurDataURL={file.blur}
-							width={`${file.metadata?.customMetadata?.width || "500"}`}
-							height={`${file.metadata?.customMetadata?.height || "500"}`}
+							width={`${file?.customMetadata?.width || "500"}`}
+							height={`${file?.customMetadata?.height || "500"}`}
 							alt="Unsplash"
 						/>
 						<div className="flex flex-col p-4 font-montserrat overlay place-content-between">
@@ -91,7 +87,7 @@ const MasonryContainer = () => {
 								className="ml-auto btn-danger"
 								onClick={() => {
 									const storage = getStorage();
-									const deleteRef = ref(storage, `${file?.metadata.name}`);
+									const deleteRef = ref(storage, `${file?.name}`);
 
 									const del = () => {
 										deleteObject(deleteRef)
@@ -103,13 +99,13 @@ const MasonryContainer = () => {
 											});
 									};
 									dispatch(setIsDeleteOpen(true));
-									dispatch(setDeleteFileName(file?.metadata?.name));
+									dispatch(setDeleteFileName(file?.name));
 									dispatch(setRemoveFunction(del));
 								}}
 							>
 								Delete
 							</button>
-							<div className="font-bold text-left">{file?.metadata.name}</div>
+							<div className="font-bold text-left">{file?.name}</div>
 						</div>
 					</div>
 				))
