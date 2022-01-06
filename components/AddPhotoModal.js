@@ -7,8 +7,10 @@ import { setIsOpen } from "../redux/modalSlice";
 
 const AddPhotoModal = () => {
 	const dispatch = useDispatch();
+
 	const isOpen = useSelector((state) => state.modal.isOpen);
 	const selectedFile = useSelector((state) => state.files.selectedFile);
+
 	const selectedFileLabel = useSelector(
 		(state) => state.files.selectedFileLabel
 	);
@@ -91,7 +93,7 @@ const AddPhotoModal = () => {
 							htmlFor="label"
 							className="block mb-1 text-sm font-bold text-gray-700"
 						>
-							Label
+							Photo name
 						</label>
 						<input
 							id="label"
@@ -125,7 +127,7 @@ const AddPhotoModal = () => {
 										selectedFileLabel &&
 										uploadHandler(selectedFile);
 								}}
-								className="p-4 text-base font-bold text-center text-white bg-green-500 shadow-md rounded-xl"
+								className="btn-primary ripple"
 							>
 								Submit
 							</button>

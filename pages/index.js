@@ -14,7 +14,7 @@ export default function Home() {
 					<meta name="description" content="unsplash styled image gallery" />
 				</Head>
 				<Navbar />
-				<AddPhotoModal isOpen={false} />
+				<AddPhotoModal />
 				<MasonryContainer />
 			</div>
 		</Provider>

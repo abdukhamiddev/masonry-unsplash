@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
 	files: null,
-	selectedFile: null,
-	selectedFileLabel: false,
 };
 
 export const filesSlice = createSlice({
@@ -13,12 +11,14 @@ export const filesSlice = createSlice({
 		setFiles: (state, action) => {
 			state.files = action.payload;
 		},
-		setSelectedFile: (state, action) => {
-			state.selectedFile = action.payload;
+		adFile: (state, action) => {
+			state.files.unshift(action.payload);
 		},
 
-		setSelectedFileLabel: (state, action) => {
-			state.selectedFileLabel = action.payload;
+		removeFile: (state, action) => {
+			state.files = state.files.map((currentFile) => {
+				return currentFile.metadata.name !== action.payload.metadata.name;
+			});
 		},
 	},
 });

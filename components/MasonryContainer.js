@@ -4,6 +4,7 @@ import {
 	getMetadata,
 	listAll,
 	ref,
+	deleteObject,
 } from "firebase/storage";
 import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
@@ -14,11 +15,13 @@ import { setFiles } from "../redux/filesSlice";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
-	const storage = getStorage();
-	const storageRef = ref(storage);
+
 	const files = useSelector((state) => state.files.files);
 
 	useEffect(() => {
+		const storage = getStorage();
+		const storageRef = ref(storage);
+
 		const fetchImages = async () => {
 			let url;
 			let result = await listAll(storageRef);
@@ -62,7 +65,7 @@ const MasonryContainer = () => {
 			dispatch(setFiles(images));
 		};
 		loadImages();
-	}, [dispatch, storageRef]);
+	}, [dispatch]);
 
 	const breakpointColumnsObj = {
 		default: 3,
@@ -90,7 +93,22 @@ const MasonryContainer = () => {
 								height={`${file.metadata?.customMetadata?.height || "500"}`}
 								alt="Unsplash"
 							/>
-							<div className="overlay">{file.metadata.name}</div>
+							<div className="flex flex-col p-4 overlay place-content-between">
+								<button
+									className="px-4 py-1 ml-auto text-red-500  border-2 border-red-600 rounded-xl hover:text-white hover:bg-red-500 text-[16px] font-semibold duration-[0.33s] transition-colors"
+									onClick={() => {
+										const storage = getStorage();
+										const deleteRef = ref(storage, `${file?.metadata.name}`);
+
+										deleteObject(deleteRef).then(() => {
+											dispatch(remove);
+										});
+									}}
+								>
+									Delete
+								</button>
+								<div className="font-bold text-left">{file?.metadata.name}</div>
+							</div>
 						</div>
 					</>
 				))}
