@@ -12,7 +12,11 @@ import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { removeFile, setFiles } from "../redux/filesSlice";
-import { setIsDeleteOpen } from "../redux/modalSlice";
+import {
+	setDeleteFileName,
+	setIsDeleteOpen,
+	setRemoveFunction,
+} from "../redux/modalSlice";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
@@ -98,7 +102,9 @@ const MasonryContainer = () => {
 												console.log(error);
 											});
 									};
-									dispatch(setIsDeleteOpen([true, del, file?.metadata?.name]));
+									dispatch(setIsDeleteOpen(true));
+									dispatch(setDeleteFileName(file?.metadata?.name));
+									dispatch(setRemoveFunction(del));
 								}}
 							>
 								Delete

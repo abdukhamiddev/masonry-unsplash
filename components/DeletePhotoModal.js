@@ -10,12 +10,14 @@ const DeletePhotoModal = () => {
 	const dispatch = useDispatch();
 
 	const isDeleteOpen = useSelector(({ modal }) => modal.isDeleteOpen);
+	const deleteFilename = useSelector(({ modal }) => modal.deleteFileName);
+	const removeFunction = useSelector(({ modal }) => modal.removeFunction);
 	console.log(isDeleteOpen);
 
 	return (
 		<div>
 			<Dialog
-				open={isDeleteOpen[0]}
+				open={isDeleteOpen}
 				onClose={() => dispatch(setIsDeleteOpen(false))}
 				className="fixed inset-0 z-10 overflow-y-auto"
 			>
@@ -38,7 +40,7 @@ const DeletePhotoModal = () => {
 									<span className="pr-1 font-normal whitespace-pre">
 										Please type in
 									</span>
-									<span className="font-extrabold underline">{`${isDeleteOpen[2]}`}</span>
+									<span className="font-extrabold underline">{`${deleteFilename}`}</span>
 									<span className="pl-1 font-normal whitespace-pre">
 										to continue
 									</span>
@@ -56,7 +58,7 @@ const DeletePhotoModal = () => {
 									type="submit"
 									onClick={(e) => {
 										e.preventDefault();
-										dispatch(setIsDeleteOpen([false]));
+										dispatch(setIsDeleteOpen(false));
 									}}
 									className="p-4 text-base text-center text-gray-400 bg-transparent rounded-xl"
 								>
@@ -66,8 +68,9 @@ const DeletePhotoModal = () => {
 									type="submit"
 									onClick={(e) => {
 										e.preventDefault();
-										if (confirm === isDeleteOpen[2]) {
-											isDeleteOpen[1]();
+										if (confirm === deleteFilename) {
+											removeFunction();
+											dispatch(setIsDeleteOpen(false));
 										}
 									}}
 									className="btn-danger ripple"
