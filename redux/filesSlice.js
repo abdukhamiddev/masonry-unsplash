@@ -11,7 +11,7 @@ export const filesSlice = createSlice({
 		setFiles: (state, action) => {
 			state.files = action.payload;
 		},
-		adFile: (state, action) => {
+		addFile: (state, action) => {
 			state.files.unshift(action.payload);
 		},
 
@@ -23,6 +23,5 @@ export const filesSlice = createSlice({
 	},
 });
 
-export const { setFiles, setSelectedFile, setSelectedFileLabel } =
-	filesSlice.actions;
+export const { setFiles, addFile, removeFile } = filesSlice.actions;
 export default filesSlice.reducer;

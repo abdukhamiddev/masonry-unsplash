@@ -11,11 +11,11 @@ import Masonry from "react-masonry-css";
 import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setFiles } from "../redux/filesSlice";
+import { removeFile, setFiles } from "../redux/filesSlice";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
-
+	const [masonryFiles, setMasonryFiles] = useState(null);
 	const files = useSelector((state) => state.files.files);
 
 	useEffect(() => {
@@ -67,6 +67,45 @@ const MasonryContainer = () => {
 		loadImages();
 	}, [dispatch]);
 
+	useEffect(() => {
+		{
+			setMasonryFiles(
+				files?.map((file) => (
+					<div className="imageContainer">
+						<NextImage
+							className="shadow-sm nextImage"
+							src={file.url}
+							placeholder="blur"
+							blurDataURL={file.blur}
+							width={`${file.metadata?.customMetadata?.width || "500"}`}
+							height={`${file.metadata?.customMetadata?.height || "500"}`}
+							alt="Unsplash"
+						/>
+						<div className="flex flex-col p-4 overlay place-content-between">
+							<button
+								className="px-4 py-1 ml-auto text-red-500  border-2 border-red-600 rounded-xl hover:text-white hover:bg-red-500 text-[16px] font-semibold duration-[0.33s] transition-colors"
+								onClick={() => {
+									const storage = getStorage();
+									const deleteRef = ref(storage, `${file?.metadata.name}`);
+
+									deleteObject(deleteRef)
+										.then(() => {
+											dispatch(removeFile(deleteRef));
+										})
+										.catch((error) => {
+											console.log(error);
+										});
+								}}
+							>
+								Delete
+							</button>
+							<div className="font-bold text-left">{file?.metadata.name}</div>
+						</div>
+					</div>
+				))
+			);
+		}
+	}, [dispatch, files]);
 	const breakpointColumnsObj = {
 		default: 3,
 
@@ -81,37 +120,7 @@ const MasonryContainer = () => {
 				className="pt-10 my-masonry-grid"
 				columnClassName="my-masonry-grid_column"
 			>
-				{files?.map((file) => (
-					<>
-						<div className="imageContainer">
-							<NextImage
-								className="shadow-sm nextImage"
-								src={file.url}
-								placeholder="blur"
-								blurDataURL={file.blur}
-								width={`${file.metadata?.customMetadata?.width || "500"}`}
-								height={`${file.metadata?.customMetadata?.height || "500"}`}
-								alt="Unsplash"
-							/>
-							<div className="flex flex-col p-4 overlay place-content-between">
-								<button
-									className="px-4 py-1 ml-auto text-red-500  border-2 border-red-600 rounded-xl hover:text-white hover:bg-red-500 text-[16px] font-semibold duration-[0.33s] transition-colors"
-									onClick={() => {
-										const storage = getStorage();
-										const deleteRef = ref(storage, `${file?.metadata.name}`);
-
-										deleteObject(deleteRef).then(() => {
-											dispatch(remove);
-										});
-									}}
-								>
-									Delete
-								</button>
-								<div className="font-bold text-left">{file?.metadata.name}</div>
-							</div>
-						</div>
-					</>
-				))}
+				{masonryFiles}
 			</Masonry>
 		</>
 	);
