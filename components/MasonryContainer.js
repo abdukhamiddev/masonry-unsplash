@@ -2,7 +2,6 @@ import {
 	getStorage,
 	getDownloadURL,
 	getMetadata,
-	listAll,
 	ref,
 	deleteObject,
 	list,
@@ -12,12 +11,13 @@ import Masonry from "react-masonry-css";
 import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addFiles, removeFile, setFiles } from "../redux/filesSlice";
+import { addFiles, removeFile } from "../redux/filesSlice";
 import {
 	setDeleteFileName,
 	setIsDeleteOpen,
 	setRemoveFunction,
 } from "../redux/modalSlice";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
@@ -80,10 +80,10 @@ const MasonryContainer = () => {
 
 	useEffect(() => {
 		{
-			const newFiles = Array.from(files);
-			newFiles.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
+			// const newFiles = Array.from(files);
+			// newFiles.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
 			setMasonryFiles(
-				newFiles?.map((file) => (
+				files?.map((file) => (
 					<div className="imageContainer" key={file.name}>
 						<NextImage
 							className="shadow-sm nextImage"
@@ -132,8 +132,17 @@ const MasonryContainer = () => {
 		500: 1,
 	};
 	return (
-		<>
-			<button onClick={() => fetchImages(pageToken)}>Load More</button>
+		<InfiniteScroll
+			dataLength={files.length}
+			next={() => fetchImages(pageToken)}
+			hasMore={pageToken === undefined ? false : true}
+			loader={<h4>Loading....</h4>}
+			endMessage={
+				<p className="text-center">
+					<b>You have seen it all!</b>
+				</p>
+			}
+		>
 			<Masonry
 				breakpointCols={breakpointColumnsObj}
 				className="pt-10 my-masonry-grid"
@@ -141,7 +150,7 @@ const MasonryContainer = () => {
 			>
 				{masonryFiles}
 			</Masonry>
-		</>
+		</InfiniteScroll>
 	);
 };
 export default MasonryContainer;

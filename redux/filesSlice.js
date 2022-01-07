@@ -12,7 +12,7 @@ export const filesSlice = createSlice({
 			state.files = action.payload;
 		},
 		addFiles: (state, action) => {
-			state.files.unshift(...action.payload);
+			state.files.push(...action.payload);
 		},
 
 		removeFile: (state, action) => {
