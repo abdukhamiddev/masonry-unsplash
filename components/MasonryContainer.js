@@ -18,6 +18,7 @@ import {
 	setRemoveFunction,
 } from "../redux/modalSlice";
 import InfiniteScroll from "react-infinite-scroll-component";
+import LoadingSpinner from "./LoadingSpinner";
 
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
@@ -136,16 +137,12 @@ const MasonryContainer = () => {
 			dataLength={files.length}
 			next={() => fetchImages(pageToken)}
 			hasMore={pageToken === undefined ? false : true}
-			loader={<h4>Loading....</h4>}
-			endMessage={
-				<p className="text-center">
-					<b>You have seen it all!</b>
-				</p>
-			}
+			loader={<LoadingSpinner />}
+			endMessage={<p className="text-2xl text-center">You have seen it all!</p>}
 		>
 			<Masonry
 				breakpointCols={breakpointColumnsObj}
-				className="pt-10 my-masonry-grid"
+				className="px-5 pt-10 my-masonry-grid"
 				columnClassName="my-masonry-grid_column"
 			>
 				{masonryFiles}

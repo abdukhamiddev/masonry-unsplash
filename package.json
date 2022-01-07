@@ -17,7 +17,8 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-masonry-css": "^1.0.16",
     "react-redux": "^7.2.6",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "sass": "^1.46.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.1.2",

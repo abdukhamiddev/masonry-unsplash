@@ -4,6 +4,8 @@
 
 @tailwind utilities;
 
+@import "./components/LoadingSpinner";
+
 html,
 body,
 #_next {
@@ -13,20 +15,20 @@ body,
 body {
 	font-family: "Noto Sans", sans-serif;
 }
+
 .btn-primary {
 	@apply p-4 text-base font-bold text-center text-white bg-green-500 shadow-sm rounded-xl;
 	background-position: center;
 	transition: background 0.7s;
-}
-.btn-primary:hover {
-	background: #34d499 radial-gradient(circle, transparent 1%, #34d399 1%)
-		center/15000%;
-}
-
-.btn-primary:active {
-	background-color: #a7f3d0;
-	background-size: 100%;
-	transition: background 0.9s;
+	&:hover {
+		background: #34d499 radial-gradient(circle, transparent 1%, #34d399 1%)
+			center/15000%;
+	}
+	&:active {
+		background-color: #a7f3d0;
+		background-size: 100%;
+		transition: background 0.9s;
+	}
 }
 
 .btn-danger {
@@ -34,15 +36,15 @@ body {
 
 	background-position: center;
 	transition: background 0.5s;
-}
-.btn-danger:hover {
-	background: #dc2626 radial-gradient(circle, transparent 1%, #dc2626 1%)
-		center/15000%;
-}
-.btn-danger:active {
-	background-color: #fca5a5;
-	background-size: 100%;
-	transition: background 0s;
+	&:hover {
+		background: #dc2626 radial-gradient(circle, transparent 1%, #dc2626 1%)
+			center/15000%;
+	}
+	&:active {
+		background-color: #fca5a5;
+		background-size: 100%;
+		transition: background 0s;
+	}
 }
 
 .my-masonry-grid {
@@ -65,10 +67,14 @@ body {
 	position: relative;
 	margin-bottom: 2rem;
 	border-radius: 15px;
+	& > div:first-child {
+		position: static !important;
+	}
+	&:hover .overlay {
+		opacity: 1;
+	}
 }
-.imageContainer > div:first-child {
-	position: static !important;
-}
+
 .overlay {
 	position: absolute;
 	top: 0;
@@ -85,9 +91,7 @@ body {
 
 	text-align: center;
 }
-.imageContainer:hover .overlay {
-	opacity: 1;
-}
+
 .my-masonry-grid_column {
 	padding-left: 30px;
 	background-clip: padding-box;

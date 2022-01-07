@@ -4,13 +4,18 @@ import LabelSvg from "../public/label.svg";
 import { Popover, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { setIsAddOpen } from "../redux/modalSlice";
+import dynamic from "next/dynamic";
+const Unsplash = dynamic(() => import("../public/unsplash.svg"));
 const Navbar = () => {
 	const dispatch = useDispatch();
 	return (
 		<>
-			<div className="items-center hidden w-full h-24 md:flex ">
-				<UnSplashLogo />
-				<form className="flex items-center w-1/6 p-4 ml-8 bg-white border border-gray-200 rounded-xl">
+			<div className="items-center hidden w-full h-24 grid-cols-3 md:grid">
+				<div className="w-[120px] h-[70px] flex items-start   ">
+					<Unsplash />
+				</div>
+
+				<form className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl">
 					<label htmlFor="search" className="mr-2">
 						<LabelSvg />
 					</label>
@@ -20,6 +25,7 @@ const Navbar = () => {
 						className="w-full text-gray-700 outline-none"
 					/>
 				</form>
+
 				<button
 					className="ml-auto btn-primary ripple"
 					onClick={() => dispatch(setIsAddOpen(true))}
@@ -31,7 +37,9 @@ const Navbar = () => {
 				className="relative flex justify-between w-full md:hidden"
 				style={{ zIndex: "2" }}
 			>
-				<UnSplashLogo />
+				<div className="w-[120px] h-[70px] flex ">
+					<Unsplash />
+				</div>
 				<Popover.Button
 					className="text-gray-800 transition-all hover:text-green-600"
 					aria-label="Show Menu"
