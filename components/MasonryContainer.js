@@ -5,13 +5,14 @@ import {
 	listAll,
 	ref,
 	deleteObject,
+	list,
 } from "firebase/storage";
 import { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
 import NextImage from "next/image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { removeFile, setFiles } from "../redux/filesSlice";
+import { addFiles, removeFile, setFiles } from "../redux/filesSlice";
 import {
 	setDeleteFileName,
 	setIsDeleteOpen,
@@ -23,55 +24,66 @@ const MasonryContainer = () => {
 	const [masonryFiles, setMasonryFiles] = useState(null);
 	const files = useSelector((state) => state.files.files);
 
-	useEffect(() => {
-		const storage = getStorage();
-		const storageRef = ref(storage);
+	const storage = getStorage();
+	const storageRef = ref(storage);
 
-		const fetchImages = async () => {
-			let url;
-			let result = await listAll(storageRef);
+	const [pageToken, setPageToken] = useState(null);
 
-			const urls = await Promise.all(
-				result.items.map((imageRef) => (url = getDownloadURL(imageRef)))
-			);
-
-			const metadata = await Promise.all(
-				result.items.map((imageRef) => getMetadata(imageRef))
-			);
-			console.log(urls, metadata, images);
-
-			const images = urls.map((url, index) => {
-				return {
-					url: url.replace(
-						"https://firebasestorage.googleapis.com",
-						`https://ik.imagekit.io/u9es71stuug/tr:${
-							window.innerWidth < 525 ? "w-515" : "w-437"
-						},c-at_min,fo-auto,q-80`
-					),
-					blur: url.replace(
-						"https://firebasestorage.googleapis.com",
-						`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
-					),
-					name: metadata[index].name,
-					size: metadata[index].size,
-					updated: metadata[index].updated,
-					customMetadata: metadata[index].customMetadata,
-				};
+	const fetchImages = async (pageToken) => {
+		let url;
+		let result;
+		if (pageToken) {
+			result = await list(storageRef, {
+				maxResults: 3,
+				pageToken,
 			});
+			console.log(result.nextPageToken);
+			setPageToken(result.nextPageToken);
+		} else if (pageToken === null) {
+			result = await list(storageRef, { maxResults: 3 });
+			setPageToken(result.nextPageToken);
+		} else {
+			return;
+		}
+		const urls = await Promise.all(
+			result.items.map((imageRef) => (url = getDownloadURL(imageRef)))
+		);
 
-			images.sort(
-				(a, b) =>
-					new Date(b?.metadata?.updated) - new Date(a?.metadata?.updated)
-			);
-			dispatch(setFiles(images));
-		};
-		fetchImages();
-	}, [dispatch]);
+		const metadata = await Promise.all(
+			result.items.map((imageRef) => getMetadata(imageRef))
+		);
+		console.log(urls, metadata, images);
+
+		const images = urls.map((url, index) => {
+			return {
+				url: url.replace(
+					"https://firebasestorage.googleapis.com",
+					`https://ik.imagekit.io/u9es71stuug/tr:${
+						window.innerWidth < 525 ? "w-515" : "w-437"
+					},c-at_min,fo-auto,q-80`
+				),
+				blur: url.replace(
+					"https://firebasestorage.googleapis.com",
+					`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
+				),
+				name: metadata[index].name,
+				size: metadata[index].size,
+				updated: metadata[index].updated,
+				customMetadata: metadata[index].customMetadata,
+			};
+		});
+		dispatch(addFiles(images));
+	};
+	useEffect(() => {
+		fetchImages(pageToken);
+	}, []);
 
 	useEffect(() => {
 		{
+			const newFiles = Array.from(files);
+			newFiles.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
 			setMasonryFiles(
-				files?.map((file) => (
+				newFiles?.map((file) => (
 					<div className="imageContainer" key={file.name}>
 						<NextImage
 							className="shadow-sm nextImage"
@@ -121,6 +133,7 @@ const MasonryContainer = () => {
 	};
 	return (
 		<>
+			<button onClick={() => fetchImages(pageToken)}>Load More</button>
 			<Masonry
 				breakpointCols={breakpointColumnsObj}
 				className="pt-10 my-masonry-grid"

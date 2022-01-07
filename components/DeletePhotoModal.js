@@ -10,7 +10,7 @@ const DeletePhotoModal = () => {
 	const dispatch = useDispatch();
 
 	const isDeleteOpen = useSelector(({ modal }) => modal.isDeleteOpen);
-	const deleteFilename = useSelector(({ modal }) => modal.deleteFileName);
+	const deleteFileName = useSelector(({ modal }) => modal.deleteFileName);
 	const removeFunction = useSelector(({ modal }) => modal.removeFunction);
 	console.log(isDeleteOpen);
 
@@ -40,7 +40,7 @@ const DeletePhotoModal = () => {
 									<span className="pr-1 font-normal whitespace-pre">
 										Please type in
 									</span>
-									<span className="font-extrabold underline">{`${deleteFilename}`}</span>
+									<span className="font-extrabold underline">{`${deleteFileName}`}</span>
 									<span className="pl-1 font-normal whitespace-pre">
 										to continue
 									</span>
@@ -68,7 +68,7 @@ const DeletePhotoModal = () => {
 									type="submit"
 									onClick={(e) => {
 										e.preventDefault();
-										if (confirm === deleteFilename) {
+										if (confirm === deleteFileName) {
 											removeFunction();
 											dispatch(setIsDeleteOpen(false));
 										}
