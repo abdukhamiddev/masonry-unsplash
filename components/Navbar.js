@@ -1,11 +1,9 @@
-import UnSplashLogo from "../public/my_unsplash_logo.svg";
-import LabelSvg from "../public/label.svg";
-
 import { Popover, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { setIsAddOpen } from "../redux/modalSlice";
 import dynamic from "next/dynamic";
 const Unsplash = dynamic(() => import("../public/unsplash.svg"));
+const SearchLabel = dynamic(() => import("../public/label.svg"));
 const Navbar = () => {
 	const dispatch = useDispatch();
 	return (
@@ -17,7 +15,7 @@ const Navbar = () => {
 
 				<form className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl">
 					<label htmlFor="search" className="mr-2">
-						<LabelSvg />
+						<SearchLabel />
 					</label>
 					<input
 						id="search"
@@ -71,7 +69,7 @@ const Navbar = () => {
 					<Popover.Panel className="absolute right-0 z-10 flex flex-col items-center w-full max-w-md py-6 space-y-6 bg-white shadow-xl -bottom-60 rounded-2xl">
 						<form className="flex items-center w-3/4 p-4 ml-8 bg-white border border-gray-200 rounded-xl">
 							<label htmlFor="search" className="mr-2">
-								<LabelSvg />
+								<SearchLabel />
 							</label>
 							<input
 								id="search"

@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { addFile } from "../redux/filesSlice";
 
 import { setIsAddOpen, setIsDeleteOpen } from "../redux/modalSlice";
+import DropZone from "./DropZone";
 
 const AddPhotoModal = () => {
 	const [file, setFile] = useState(null);
@@ -122,50 +123,11 @@ const AddPhotoModal = () => {
 					<Dialog.Title className="mb-5 text-xl font-medium">
 						Add a new photo
 					</Dialog.Title>
-					<form className="flex flex-col">
-						<label
-							htmlFor="label"
-							className="block mb-1 text-sm font-bold text-gray-700"
-						>
-							Photo name
-						</label>
-						<input
-							id="label"
-							placeholder="Enter label for your photo"
-							className="w-full px-3 py-3 mb-5 text-xs text-gray-700 border border-black border-opacity-50 rounded-xl"
-							onChange={(e) => setFileLabel(e.target.value)}
-							required={true}
-						/>
-						<input
-							type="file"
-							accept="image/*"
-							required={true}
-							onChange={(e) => setFile(e.target.files[0])}
-						/>
-						<div className="flex space-x-4 place-content-end">
-							<button
-								type="submit"
-								onClick={(e) => {
-									e.preventDefault();
-									dispatch(setIsAddOpen(false));
-								}}
-								className="p-4 text-base text-center text-gray-400 bg-transparent rounded-xl"
-							>
-								Cancel
-							</button>
-							<button
-								type="submit"
-								onClick={(e) => {
-									e.preventDefault();
-									file && fileLabel && uploadHandler(file);
-									dispatch(setIsAddOpen(false));
-								}}
-								className="btn-primary ripple"
-							>
-								Submit
-							</button>
-						</div>
-					</form>
+					<DropZone
+						uploadHandler={uploadHandler}
+						fileLabel={fileLabel}
+						setFileLabel={setFileLabel}
+					/>
 				</div>
 			</div>
 		</Dialog>
