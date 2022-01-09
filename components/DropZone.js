@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { setIsAddOpen } from "../redux/modalSlice";
-import dropzonePlaceholder from "../public/dropzonePlaceholder.svg";
+import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import DropzonePlaceholder from "../public/dropzonePlaceholder.svg";
 
-const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
+const Dropzone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 	const dispatch = useDispatch();
-
 	const [noLabel, setNoLabel] = useState(false);
 	const {
 		acceptedFiles,
@@ -18,15 +17,14 @@ const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 		isDragAccept,
 		isDragReject,
 	} = useDropzone({
-		accept: "image/jpeg,image/png",
+		accept: "image/jpeg, image/png",
 		maxFiles: 1,
 		multiple: false,
 		maxSize: 5000000,
 	});
-
 	const acceptedFileItems = acceptedFiles.map((file) => (
-		<div key={file.path} className="">
-			<span>{file.path}</span>
+		<div key={file.path} className="flex flex-col max-w-full text-center">
+			<span className="truncate ">{file.path}</span>
 			<span>{(file.size / 1000000).toFixed(2)} MB</span>
 		</div>
 	));
@@ -49,7 +47,6 @@ const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 						: ""
 				} transition-all w-full text-gray-700 text-xs px-3 py-3 border border-black border-opacity-50 rounded-xl mb-5`}
 				onChange={(e) => setFileLabel(e.target.value)}
-				required={true}
 			></input>
 			{isDragReject ? (
 				<h2 className="text-red-500 dark:text-red-400 min-h-[3rem] text-center">
@@ -82,17 +79,18 @@ const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 						: ""
 				}`}
 			>
-				<Image
-					src={
-						acceptedFiles.length > 0
-							? URL.createObjectURL(acceptedFiles[0])
-							: dropzonePlaceholder
-					}
-					alt="upload placeholder"
-					className={`object-cover rounded-2xl transition-all`}
-					width={250}
-					height={250}
-				></Image>
+				{acceptedFiles.length > 0 ? (
+					<Image
+						src={URL.createObjectURL(acceptedFiles[0])}
+						alt="upload placeholder"
+						className={`object-cover rounded-2xl transition-all`}
+						width={250}
+						height={250}
+					/>
+				) : (
+					<DropzonePlaceholder />
+				)}
+
 				<span className="text-[#BDBDBD] dark:text-grayGray-500 flex max-w-full text-center">
 					{acceptedFiles.length > 0
 						? acceptedFileItems
@@ -142,7 +140,10 @@ const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 					</button>
 
 					<button
-						onClick={open}
+						onClick={(e) => {
+							e.preventDefault();
+							open();
+						}}
 						className="font-bold text-center bg-[#2F80ED] hover:bg-[#2666be] dark:bg-blue-500 dark:hover:bg-blue-600 transition-all rounded-[8px] p-3 text-white hover:"
 					>
 						Choose a file
@@ -152,5 +153,4 @@ const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 		</form>
 	);
 };
-
-export default DropZone;
+export default Dropzone;

@@ -11,10 +11,9 @@ import { useDispatch } from "react-redux";
 import { addFile } from "../redux/filesSlice";
 
 import { setIsAddOpen, setIsDeleteOpen } from "../redux/modalSlice";
-import DropZone from "./DropZone";
+import Dropzone from "./Dropzone";
 
 const AddPhotoModal = () => {
-	const [file, setFile] = useState(null);
 	const [fileLabel, setFileLabel] = useState("");
 
 	const dispatch = useDispatch();
@@ -106,7 +105,6 @@ const AddPhotoModal = () => {
 		};
 	};
 	useEffect(() => {
-		setFile(null);
 		setFileLabel(null);
 	}, [isAddOpen]);
 
@@ -123,7 +121,7 @@ const AddPhotoModal = () => {
 					<Dialog.Title className="mb-5 text-xl font-medium">
 						Add a new photo
 					</Dialog.Title>
-					<DropZone
+					<Dropzone
 						uploadHandler={uploadHandler}
 						fileLabel={fileLabel}
 						setFileLabel={setFileLabel}
