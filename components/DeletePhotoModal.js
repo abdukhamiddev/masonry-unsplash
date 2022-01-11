@@ -46,6 +46,7 @@ const DeletePhotoModal = () => {
 								</div>
 							</label>
 							<input
+								placeholder={deleteFileName}
 								type="confirm"
 								className="w-full px-3 py-3 mb-5 text-xs text-gray-700 border border-black border-opacity-50 rounded-xl"
 								required={true}

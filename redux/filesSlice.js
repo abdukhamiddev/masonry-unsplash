@@ -19,7 +19,7 @@ export const filesSlice = createSlice({
 		},
 
 		removeFile: (state, action) => {
-			state.files = state.files.map((currentFile) => {
+			state.files = state.files.filter((currentFile) => {
 				return currentFile.name !== action.payload.name;
 			});
 		},

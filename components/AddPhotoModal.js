@@ -46,13 +46,11 @@ const AddPhotoModal = () => {
 			const width = myImage.naturalWidth;
 			const height = myImage.naturalHeight;
 
-			metadata.customMetaData.width = myImage.naturalWidth;
-			metadata.customMetaData.height = myImage.naturalHeight;
+			metadata?.customMetadata?.width = myImage.naturalWidth;
+			metadata?.customMetadata?.height = myImage.naturalHeight;
 
 			window.URL.revokeObjectURL(myImage.src);
 			console.log(width, height);
-
-			const storageRef = ref(storage, `/${file.name}`);
 
 			const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
@@ -104,12 +102,11 @@ const AddPhotoModal = () => {
 									"https://firebasestorage.googleapis.com",
 									`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
 								),
-								metadata: {
-									name: fileLabel,
-									customMetadata: {
-										width: metadata?.customMetadata?.width,
-										height: metadata?.customMetadata?.height,
-									},
+
+								name: fileLabel,
+								customMetadata: {
+									width: metadata?.customMetadata?.width,
+									height: metadata?.customMetadata?.height,
 								},
 							})
 						);

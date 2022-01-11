@@ -23,7 +23,7 @@ import LoadingSpinner from "./LoadingSpinner";
 const MasonryContainer = () => {
 	const dispatch = useDispatch();
 	const [masonryFiles, setMasonryFiles] = useState(null);
-	const files = useSelector((state) => state.files.files);
+	const files = useSelector(({ files }) => files.files);
 
 	const storage = getStorage();
 	const storageRef = ref(storage);
@@ -83,7 +83,7 @@ const MasonryContainer = () => {
 		{
 			setMasonryFiles(
 				files?.map((file) => (
-					<div className="imageContainer" key={file.name}>
+					<div className="imageContainer" key={file.url}>
 						<NextImage
 							className="shadow-sm nextImage"
 							src={file?.url}
@@ -103,7 +103,7 @@ const MasonryContainer = () => {
 									const del = () => {
 										deleteObject(deleteRef)
 											.then(() => {
-												dispatch(removeFile(deleteRef));
+												dispatch(removeFile(file));
 											})
 											.catch((error) => {
 												console.log(error);
