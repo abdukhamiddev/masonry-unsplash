@@ -31,11 +31,30 @@ const ImageUploaded = () => {
 				alt="Uploaded file"
 				width={250}
 				height={250}
-				className=""
+				className="object-cover max-w-64 max-h-64 rounded-xl"
 			/>
-			<div>
-				<a href={files[0].originalUrl}>{files[0].originalUrl}</a>
-				<button>Copy</button>
+			<div className="flex items-center w-full space-x-2 bg-[#f6f8fb] dark:bg-dp03 border-[#e0e0e0] rounded-xl p-1 border-[1.5px]  dark:border-opacity-25 ">
+				<a
+					href={files[0].originalUrl}
+					className="text-xs text-[#4f4f4f] truncate w-3/4 dark:text-gray-500 dark:hover:text-gray-100"
+				>
+					{files[0].originalUrl}
+				</a>
+				<button
+					className="w-1/4 transition-all btn-secondary"
+					onClick={(e) => {
+						e.target.innerHTML = "Copied!";
+						navigator.clipboard.writeText(files[0].originalUrl);
+						e.target.className =
+							"w-1/4 cursor-not-allowed pointer-events-none btn-primary";
+						setTimeout(() => {
+							e.target.className = "w-1/4 btn-secondary";
+							e.target.innerHTML = "Copy";
+						}, 2000);
+					}}
+				>
+					Copy
+				</button>
 			</div>
 		</>
 	);

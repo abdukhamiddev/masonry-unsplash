@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import { Popover, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { setIsAddOpen } from "../redux/modalSlice";
@@ -6,6 +8,7 @@ const Unsplash = dynamic(() => import("../public/unsplash.svg"));
 const SearchLabel = dynamic(() => import("../public/label.svg"));
 
 const Navbar = () => {
+	const [active, setActive] = useState(false);
 	const dispatch = useDispatch();
 	return (
 		<>
@@ -14,8 +17,12 @@ const Navbar = () => {
 					<Unsplash />
 				</div>
 
-				<form className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl">
-					<label htmlFor="search" className="mr-2">
+				<form
+					className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl"
+					onMouseMove={() => setActive(true)}
+					onMouseLeave={() => setActive(false)}
+				>
+					<label htmlFor="search" className={`mr-2 ${active && "hidden"}`}>
 						<SearchLabel />
 					</label>
 					<input
