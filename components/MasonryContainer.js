@@ -53,10 +53,10 @@ const MasonryContainer = () => {
 		const metadata = await Promise.all(
 			result.items.map((imageRef) => getMetadata(imageRef))
 		);
-		console.log(urls, metadata, images);
 
 		const images = urls.map((url, index) => {
 			return {
+				originalUrl: url,
 				url: url.replace(
 					"https://firebasestorage.googleapis.com",
 					`https://ik.imagekit.io/u9es71stuug/tr:${
@@ -81,14 +81,12 @@ const MasonryContainer = () => {
 
 	useEffect(() => {
 		{
-			// const newFiles = Array.from(files);
-			// newFiles.sort((a, b) => new Date(b?.updated) - new Date(a?.updated));
 			setMasonryFiles(
 				files?.map((file) => (
 					<div className="imageContainer" key={file.name}>
 						<NextImage
 							className="shadow-sm nextImage"
-							src={file.url}
+							src={file?.url}
 							placeholder="blur"
 							blurDataURL={file.blur}
 							width={`${file?.customMetadata?.width || "500"}`}

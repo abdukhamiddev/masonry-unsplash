@@ -4,16 +4,14 @@ import { setIsAddOpen } from "../redux/modalSlice";
 import dynamic from "next/dynamic";
 const Unsplash = dynamic(() => import("../public/unsplash.svg"));
 const SearchLabel = dynamic(() => import("../public/label.svg"));
-const Somehow = dynamic(() => import("../public/some.svg"));
 
 const Navbar = () => {
 	const dispatch = useDispatch();
 	return (
 		<>
 			<div className="items-center hidden w-full h-24 grid-cols-3 md:grid">
-				<div className="w-[120px] h-[70px] flex items-start   ">
+				<div className="w-[120px] h-[70px] flex items-start">
 					<Unsplash />
-					<Somehow />
 				</div>
 
 				<form className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl">

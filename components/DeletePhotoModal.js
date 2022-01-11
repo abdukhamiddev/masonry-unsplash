@@ -12,7 +12,6 @@ const DeletePhotoModal = () => {
 	const isDeleteOpen = useSelector(({ modal }) => modal.isDeleteOpen);
 	const deleteFileName = useSelector(({ modal }) => modal.deleteFileName);
 	const removeFunction = useSelector(({ modal }) => modal.removeFunction);
-	console.log(isDeleteOpen);
 
 	return (
 		<div>

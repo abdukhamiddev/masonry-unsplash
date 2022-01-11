@@ -6,7 +6,7 @@ const initialState = {
 	deleteFileName: null,
 	removeFunction: null,
 	loading: "false",
-	progress: false,
+	progress: 0,
 	loaded: false,
 };
 export const modalSlice = createSlice({

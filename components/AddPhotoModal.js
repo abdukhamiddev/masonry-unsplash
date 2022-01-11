@@ -10,15 +10,23 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addFile } from "../redux/filesSlice";
 
-import { setIsAddOpen, setIsDeleteOpen } from "../redux/modalSlice";
+import {
+	setIsAddOpen,
+	setIsDeleteOpen,
+	setLoading,
+	setProgress,
+} from "../redux/modalSlice";
 import Dropzone from "./Dropzone";
+import ImageUploaded from "./ImageUploaded";
+import ProgressBar from "./ProgressBar";
 
 const AddPhotoModal = () => {
 	const [fileLabel, setFileLabel] = useState("");
 
 	const dispatch = useDispatch();
-
-	const isAddOpen = useSelector((state) => state.modal.isAddOpen);
+	const isAddOpen = useSelector(({ modal }) => modal.isAddOpen);
+	const loading = useSelector(({ modal }) => modal.loading);
+	const progress = useSelector(({ modal }) => modal.progress);
 
 	const storage = getStorage();
 	const storageRef = ref(storage, `/${fileLabel}`);
@@ -51,12 +59,16 @@ const AddPhotoModal = () => {
 			uploadTask.on(
 				"state_changed",
 				(snapshot) => {
+					dispatch(
+						setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+					);
+					console.log("Upload is " + progress + "%done");
 					switch (snapshot.state) {
 						case "paused":
-							console.log("Upload is paused");
+							//		console.log("Upload is paused");
 							break;
 						case "running":
-							console.log("Upload is running");
+							//			console.log("Upload is running");
 							break;
 						default:
 							break;
@@ -77,9 +89,11 @@ const AddPhotoModal = () => {
 					}
 				},
 				() => {
+					dispatch(setLoading("loaded"));
 					getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
 						dispatch(
 							addFile({
+								originalUrl: downloadUrl,
 								url: downloadUrl.replace(
 									"https://firebasestorage.googleapis.com",
 									`https://ik.imagekit.io/u9es71stuug/tr:${
@@ -111,21 +125,35 @@ const AddPhotoModal = () => {
 	return (
 		<Dialog
 			open={isAddOpen}
-			onClose={() => dispatch(setIsAddOpen(false))}
+			onClose={() => {
+				dispatch(setIsAddOpen(false)),
+					dispatch(setLoading("false")),
+					dispatch(setProgress(0));
+			}}
 			className="fixed inset-0 z-10 overflow-y-auto"
 		>
 			<div className="flex items-center justify-center min-h-screen">
 				<Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
 
-				<div className="relative flex flex-col w-full max-w-md p-6 mx-auto bg-white rounded-lg">
-					<Dialog.Title className="mb-5 text-xl font-medium">
-						Add a new photo
-					</Dialog.Title>
-					<Dropzone
-						uploadHandler={uploadHandler}
-						fileLabel={fileLabel}
-						setFileLabel={setFileLabel}
-					/>
+				<div className="relative flex flex-col items-center w-full max-w-md p-6 mx-auto space-y-6 transition-all bg-white  shadow-md dark:bg-dp01 rounded-[12px] m-auto py-12 px-8 ">
+					{
+						{
+							false: (
+								<>
+									<Dialog.Title className="mb-5 text-xl font-medium">
+										Add a new photo
+									</Dialog.Title>
+									<Dropzone
+										uploadHandler={uploadHandler}
+										fileLabel={fileLabel}
+										setFileLabel={setFileLabel}
+									/>
+								</>
+							),
+							true: <ProgressBar />,
+							loaded: <ImageUploaded />,
+						}[loading]
+					}
 				</div>
 			</div>
 		</Dialog>
