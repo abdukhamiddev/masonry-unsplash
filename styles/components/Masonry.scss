@@ -4,6 +4,9 @@
 	width: auto;
 	max-width: 1400px;
 	margin: auto;
+	@media screen and (min-width: 1400px) {
+		margin: auto;
+	}
 }
 
 .nextImage {
@@ -46,4 +49,6 @@
 .my-masonry-grid_column {
 	padding-left: 30px;
 	background-clip: padding-box;
+	&:first-child {
+	}
 }

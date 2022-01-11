@@ -5,6 +5,9 @@ const initialState = {
 	isDeleteOpen: false,
 	deleteFileName: null,
 	removeFunction: null,
+	loading: "false",
+	progress: false,
+	loaded: false,
 };
 export const modalSlice = createSlice({
 	name: "modal",
@@ -24,6 +27,13 @@ export const modalSlice = createSlice({
 		setRemoveFunction: (state, action) => {
 			state.removeFunction = action.payload;
 		},
+
+		setLoading: (state, action) => {
+			state.loading = action.payload;
+		},
+		setProgress: (state, action) => {
+			state.progress = action.payload;
+		},
 	},
 });
 
@@ -32,5 +42,7 @@ export const {
 	setIsDeleteOpen,
 	setRemoveFunction,
 	setDeleteFileName,
+	setLoading,
+	setProgress,
 } = modalSlice.actions;
 export default modalSlice.reducer;
