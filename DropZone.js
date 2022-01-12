@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setIsAddOpen, setLoading } from "../redux/modalSlice";
+import { setIsAddOpen, setLoading } from "./redux/modalSlice";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import DropzonePlaceholder from "../public/dropzonePlaceholder.svg";
 
-const Dropzone = ({ uploadHandler, fileLabel, setFileLabel }) => {
+const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 	const dispatch = useDispatch();
 	const [noLabel, setNoLabel] = useState(false);
 	const {
@@ -154,4 +154,4 @@ const Dropzone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 		</form>
 	);
 };
-export default Dropzone;
+export default DropZone;

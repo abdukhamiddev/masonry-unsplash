@@ -16,7 +16,7 @@ import {
 	setLoading,
 	setProgress,
 } from "../redux/modalSlice";
-import Dropzone from "./Dropzone.js";
+import DropZone from "../DropZone";
 import ImageUploaded from "./ImageUploaded";
 import ProgressBar from "./ProgressBar";
 
@@ -140,7 +140,7 @@ const AddPhotoModal = () => {
 									<Dialog.Title className="mb-5 text-xl font-medium dark:text-grayGray-300">
 										Add a new photo
 									</Dialog.Title>
-									<Dropzone
+									<DropZone
 										uploadHandler={uploadHandler}
 										fileLabel={fileLabel}
 										setFileLabel={setFileLabel}
