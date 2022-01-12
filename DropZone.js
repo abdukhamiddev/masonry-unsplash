@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setIsAddOpen, setLoading } from "./redux/modalSlice";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import DropzonePlaceholder from "../public/dropzonePlaceholder.svg";
+import DropzonePlaceholder from "./public/dropzonePlaceholder.svg";
 
 const DropZone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 	const dispatch = useDispatch();
