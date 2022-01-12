@@ -12,7 +12,7 @@ import { addFile } from "../redux/filesSlice";
 
 import {
 	setIsAddOpen,
-	setIsDeleteOpen,
+	
 	setLoading,
 	setProgress,
 } from "../redux/modalSlice";
