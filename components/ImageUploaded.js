@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 
 const ImageUploaded = () => {
 	const files = useSelector(({ files }) => files.files);
+	const darkMode = useSelector(({ darkMode }) => darkMode.darkMode);
+
 	return (
 		<>
 			<span>
@@ -14,8 +16,7 @@ const ImageUploaded = () => {
 					height="64"
 					viewBox="0 0 24 24"
 					strokeWidth="1"
-					//stroke={darkMode ? "#1e1e1e" : "#ffffff"}
-					stroke="#fff"
+					stroke={darkMode ? "#1e1e1e" : "#ffffff"}
 					fill="#10B981"
 					strokeLinecap="round"
 					strokeLinejoin="round"
@@ -36,7 +37,7 @@ const ImageUploaded = () => {
 			<div className="flex items-center w-full space-x-2 bg-[#f6f8fb] dark:bg-dp03 border-[#e0e0e0] rounded-xl p-1 border-[1.5px]  dark:border-opacity-25 ">
 				<a
 					href={files[0].originalUrl}
-					className="text-xs text-[#4f4f4f] truncate w-3/4 dark:text-gray-500 dark:hover:text-gray-100"
+					className="text-xs text-[#4f4f4f] truncate w-3/4 dark:text-grayGray-500 dark:hover:text-grayGray-100"
 				>
 					{files[0].originalUrl}
 				</a>

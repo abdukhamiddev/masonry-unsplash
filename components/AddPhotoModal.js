@@ -34,7 +34,7 @@ const AddPhotoModal = () => {
 	const uploadHandler = async (file) => {
 		const metadata = {
 			contentType: "image/*",
-			customMetaData: {
+			customMetadata: {
 				width: 0,
 				height: 0,
 			},
@@ -137,7 +137,7 @@ const AddPhotoModal = () => {
 						{
 							false: (
 								<>
-									<Dialog.Title className="mb-5 text-xl font-medium">
+									<Dialog.Title className="mb-5 text-xl font-medium dark:text-grayGray-300">
 										Add a new photo
 									</Dialog.Title>
 									<Dropzone

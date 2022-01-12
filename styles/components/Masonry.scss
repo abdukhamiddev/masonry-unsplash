@@ -1,32 +1,37 @@
 .my-masonry-grid {
 	display: flex;
+	margin: auto;
 	margin-left: -30px;
 	width: auto;
 	max-width: 1400px;
-	margin: auto;
+
 	@media screen and (min-width: 1400px) {
 		margin: auto;
 	}
 }
+.my-masonry-grid_column {
+	padding-left: 30px;
+	background-clip: padding-box;
+}
 
 .nextImage {
 	margin: auto;
-
 	border-radius: 15px;
 	border: 1px solid #eaeaea;
 	width: 100%;
-	object-fit: cover;
 }
 .imageContainer {
 	position: relative;
 	margin-bottom: 2rem;
 	border-radius: 15px;
+	height: auto;
 	& > div:first-child {
 		position: static !important;
 	}
 	&:hover .overlay {
 		opacity: 1;
 	}
+	@apply transition-shadow shadow-lg;
 }
 
 .overlay {
@@ -34,6 +39,7 @@
 	top: 0;
 	left: 0;
 	border-radius: 15px;
+
 	background: rgba(0, 0, 0, 0.5);
 
 	width: 100%;
@@ -46,9 +52,6 @@
 	text-align: center;
 }
 
-.my-masonry-grid_column {
-	padding-left: 30px;
-	background-clip: padding-box;
-	&:first-child {
-	}
+body.dark .nextImage {
+	background-color: red;
 }

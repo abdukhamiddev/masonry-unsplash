@@ -38,7 +38,7 @@ const MasonryContainer = () => {
 				maxResults: 3,
 				pageToken,
 			});
-			console.log(result.nextPageToken);
+
 			setPageToken(result.nextPageToken);
 		} else if (pageToken === null) {
 			result = await list(storageRef, { maxResults: 3 });
@@ -65,7 +65,7 @@ const MasonryContainer = () => {
 				),
 				blur: url.replace(
 					"https://firebasestorage.googleapis.com",
-					`https://ik.imagekit.io/u9es71stuug/tr:w-10,h-10,q-10,bl-50`
+					`https://ik.imagekit.io/u9es71stuug/tr:w-2,h-2,q-2,bl-90`
 				),
 				name: metadata[index].name,
 				size: metadata[index].size,
@@ -74,6 +74,7 @@ const MasonryContainer = () => {
 			};
 		});
 		dispatch(addFiles(images));
+		console.log(files);
 	};
 	useEffect(() => {
 		fetchImages(pageToken);
@@ -83,9 +84,12 @@ const MasonryContainer = () => {
 		{
 			setMasonryFiles(
 				files?.map((file) => (
-					<div className="imageContainer" key={file.url}>
+					<div
+						className="imageContainer dark:filter dark:brightness-[80%] dark:contrast-[1.2] transition-all"
+						key={file.url}
+					>
 						<NextImage
-							className="shadow-sm nextImage"
+							className="nextImage"
 							src={file?.url}
 							placeholder="blur"
 							blurDataURL={file.blur}
@@ -136,10 +140,15 @@ const MasonryContainer = () => {
 			next={() => fetchImages(pageToken)}
 			hasMore={pageToken === undefined ? false : true}
 			loader={<LoadingSpinner />}
-			endMessage={<p className="text-2xl text-center">You have seen it all!</p>}
+			endMessage={
+				<p className="text-2xl text-center dark:text-grayGray-300">
+					You have seen it all!
+				</p>
+			}
 		>
 			<Masonry
 				breakpointCols={breakpointColumnsObj}
+				id="masonry"
 				className="px-5 pt-10 my-masonry-grid"
 				columnClassName="my-masonry-grid_column"
 			>

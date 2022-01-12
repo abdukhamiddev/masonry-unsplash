@@ -4,36 +4,51 @@ import { Popover, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
 import { setIsAddOpen } from "../redux/modalSlice";
 import dynamic from "next/dynamic";
+import { useSelector } from "react-redux";
+import Image from "next/image";
+import ToggleDarkMode from "./ToggleDarkMode";
 const Unsplash = dynamic(() => import("../public/unsplash.svg"));
+const UnsplashWhite = dynamic(() => import("../public/unsplash_white.svg"));
 const SearchLabel = dynamic(() => import("../public/label.svg"));
 
 const Navbar = () => {
 	const [active, setActive] = useState(false);
+
 	const dispatch = useDispatch();
+
+	const dark = useSelector((state) => state.darkMode);
 	return (
 		<>
-			<div className="items-center hidden w-full h-24 grid-cols-3 md:grid">
-				<div className="w-[120px] h-[70px] flex items-start">
-					<Unsplash />
+			<div className="items-center hidden w-full h-24 md:flex">
+				{dark.darkMode === true ? (
+					<div className="w-[120px] h-[50px] flex items-start">
+						<UnsplashWhite />
+					</div>
+				) : (
+					<div className="w-[120px] h-[50px] flex items-start">
+						<Unsplash />
+					</div>
+				)}
+				<div className="m-auto pl-[158px]">
+					<form
+						className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl dark:bg-dp06 dark:border-dp16 shadow-sm "
+						onMouseMove={() => setActive(true)}
+						onMouseLeave={() => setActive(false)}
+					>
+						<label htmlFor="search" className={`mr-2 ${active && "hidden"}`}>
+							<SearchLabel />
+						</label>
+						<input
+							id="search"
+							placeholder="Search by name"
+							className="w-full text-gray-700 transition-all outline-none dark:bg-dp06 dark:text-gray-100"
+						/>
+					</form>
 				</div>
 
-				<form
-					className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl"
-					onMouseMove={() => setActive(true)}
-					onMouseLeave={() => setActive(false)}
-				>
-					<label htmlFor="search" className={`mr-2 ${active && "hidden"}`}>
-						<SearchLabel />
-					</label>
-					<input
-						id="search"
-						placeholder="Search by name"
-						className="w-full text-gray-700 outline-none"
-					/>
-				</form>
-
+				<ToggleDarkMode />
 				<button
-					className="ml-auto btn-primary ripple"
+					className="btn-primary ripple"
 					onClick={() => dispatch(setIsAddOpen(true))}
 				>
 					Add a photo
@@ -43,11 +58,18 @@ const Navbar = () => {
 				className="relative flex justify-between w-full md:hidden"
 				style={{ zIndex: "2" }}
 			>
-				<div className="w-[120px] h-[70px] flex ">
-					<Unsplash />
-				</div>
+				{dark.darkMode === true ? (
+					<div className="w-[120px] h-[50px] flex items-start">
+						<UnsplashWhite />
+					</div>
+				) : (
+					<div className="w-[120px] h-[50px] flex items-start">
+						<Unsplash />
+					</div>
+				)}
+
 				<Popover.Button
-					className="text-gray-800 transition-all hover:text-green-600"
+					className="text-gray-800 transition-all hover:text-green-600 dark:text-grayGray-500"
 					aria-label="Show Menu"
 				>
 					<svg
