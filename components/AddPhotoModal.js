@@ -16,7 +16,7 @@ import {
 	setLoading,
 	setProgress,
 } from "../redux/modalSlice";
-import Dropzone from "./Dropzone";
+import Dropzone from "./Dropzone.js";
 import ImageUploaded from "./ImageUploaded";
 import ProgressBar from "./ProgressBar";
 
