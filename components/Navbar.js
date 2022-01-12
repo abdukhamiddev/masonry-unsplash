@@ -7,14 +7,14 @@ import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import ToggleDarkMode from "./ToggleDarkMode";
+import { setSearchTerm } from "../redux/filesSlice";
 const Unsplash = dynamic(() => import("../public/unsplash.svg"));
 const UnsplashWhite = dynamic(() => import("../public/unsplash_white.svg"));
 const SearchLabel = dynamic(() => import("../public/label.svg"));
 
 const Navbar = () => {
-	const [active, setActive] = useState(false);
-
 	const dispatch = useDispatch();
+	const searchTerm = useSelector(({ files }) => files.searchTerm);
 
 	const dark = useSelector((state) => state.darkMode);
 	return (
@@ -30,23 +30,24 @@ const Navbar = () => {
 					</div>
 				)}
 				<div className="m-auto pl-[158px]">
-					<form
-						className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl dark:bg-dp06 dark:border-dp16 shadow-sm "
-						onMouseMove={() => setActive(true)}
-						onMouseLeave={() => setActive(false)}
-					>
-						<label htmlFor="search" className={`mr-2 ${active && "hidden"}`}>
+					<div className="flex items-center w-[300px] p-4 ml-8 bg-white border border-gray-200 rounded-xl dark:bg-dp06 dark:border-dp16 shadow-sm ">
+						<label htmlFor="search" className="mr-2">
 							<SearchLabel />
 						</label>
 						<input
+							onChange={(e) => {
+								e.preventDefault();
+								dispatch(setSearchTerm(e.target.value));
+							}}
 							id="search"
 							placeholder="Search by name"
 							className="w-full text-gray-700 transition-all outline-none dark:bg-dp06 dark:text-gray-100"
+							value={searchTerm}
 						/>
-					</form>
+					</div>
 				</div>
 
-				<ToggleDarkMode />
+				{typeof window !== "undefined" && <ToggleDarkMode />}
 				<button
 					className="btn-primary ripple"
 					onClick={() => dispatch(setIsAddOpen(true))}
@@ -97,16 +98,22 @@ const Navbar = () => {
 					leaveTo="transform scale-95 opacity-0"
 				>
 					<Popover.Panel className="absolute right-0 z-10 flex flex-col items-center w-full max-w-md py-6 space-y-6 bg-white shadow-xl -bottom-60 rounded-2xl">
-						<form className="flex items-center w-3/4 p-4 ml-8 bg-white border border-gray-200 rounded-xl">
+						{typeof window !== "undefined" && <ToggleDarkMode />}
+						<div className="flex items-center w-3/4 p-4 ml-8 bg-white border border-gray-200 rounded-xl">
 							<label htmlFor="search" className="mr-2">
 								<SearchLabel />
 							</label>
 							<input
+								onChange={(e) => {
+									e.preventDefault();
+									dispatch(setSearchTerm(e.target.value));
+								}}
 								id="search"
 								placeholder="Search by name"
 								className="w-full text-gray-700 outline-none"
+								value={searchTerm}
 							/>
-						</form>
+						</div>
 						<button
 							className="btn-primary ripple"
 							onClick={() => dispatch(setIsAddOpen(true))}

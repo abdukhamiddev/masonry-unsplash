@@ -23,8 +23,8 @@ const DeletePhotoModal = () => {
 				<div className="flex items-center justify-center min-h-screen">
 					<Dialog.Overlay className="fixed inset-0 bg-black opacity-50" />
 
-					<div className="relative flex flex-col w-full max-w-md p-6 mx-auto bg-white rounded-lg">
-						<Dialog.Title className="mb-5 text-xl font-medium">
+					<div className="relative flex flex-col w-full max-w-md p-6 mx-auto bg-white rounded-lg dark:bg-dp01">
+						<Dialog.Title className="mb-5 text-xl font-medium dark:text-grayGray-500">
 							Delete Photo
 						</Dialog.Title>
 						<form className="flex flex-col">
@@ -39,7 +39,7 @@ const DeletePhotoModal = () => {
 									<span className="pr-1 font-normal whitespace-pre">
 										Please type in
 									</span>
-									<span className="font-extrabold underline">{`${deleteFileName}`}</span>
+									<span className="font-extrabold underline dark:text-yellow-300">{`${deleteFileName}`}</span>
 									<span className="pl-1 font-normal whitespace-pre">
 										to continue
 									</span>
@@ -48,7 +48,7 @@ const DeletePhotoModal = () => {
 							<input
 								placeholder={deleteFileName}
 								type="confirm"
-								className="w-full px-3 py-3 mb-5 text-xs text-gray-700 border border-black border-opacity-50 rounded-xl"
+								className="w-full px-3 py-3 mb-5 text-xs text-gray-700 border border-black border-opacity-50 rounded-xl dark:bg-dp12 dark:border-dp16 dark:text-grayGray-400"
 								required={true}
 								onChange={(e) => setConfirm(e.target.value)}
 							/>
@@ -60,7 +60,7 @@ const DeletePhotoModal = () => {
 										e.preventDefault();
 										dispatch(setIsDeleteOpen(false));
 									}}
-									className="p-4 text-base text-center text-gray-400 bg-transparent rounded-xl"
+									className="p-4 text-base text-center text-gray-400 transition-all bg-transparent rounded-xl hover:text-gray-200"
 								>
 									Cancel
 								</button>

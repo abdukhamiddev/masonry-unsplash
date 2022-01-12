@@ -31,7 +31,6 @@
 	&:hover .overlay {
 		opacity: 1;
 	}
-	@apply transition-shadow shadow-lg;
 }
 
 .overlay {
@@ -43,13 +42,14 @@
 	background: rgba(0, 0, 0, 0.5);
 
 	width: 100%;
-	height: 100%;
+	height: 99%;
 	transition: 0.5s ease;
 	opacity: 0;
 	color: white;
 	font-size: 20px;
 
 	text-align: center;
+	@apply shadow-md;
 }
 
 body.dark .nextImage {

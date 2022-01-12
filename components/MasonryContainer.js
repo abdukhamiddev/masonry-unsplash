@@ -24,6 +24,7 @@ const MasonryContainer = () => {
 	const dispatch = useDispatch();
 	const [masonryFiles, setMasonryFiles] = useState(null);
 	const files = useSelector(({ files }) => files.files);
+	const searchTerm = useSelector(({ files }) => files.searchTerm);
 
 	const storage = getStorage();
 	const storageRef = ref(storage);
@@ -83,50 +84,60 @@ const MasonryContainer = () => {
 	useEffect(() => {
 		{
 			setMasonryFiles(
-				files?.map((file) => (
-					<div
-						className="imageContainer dark:filter dark:brightness-[80%] dark:contrast-[1.2] transition-all"
-						key={file.url}
-					>
-						<NextImage
-							className="nextImage"
-							src={file?.url}
-							placeholder="blur"
-							blurDataURL={file.blur}
-							width={`${file?.customMetadata?.width || "500"}`}
-							height={`${file?.customMetadata?.height || "500"}`}
-							alt="Unsplash"
-						/>
-						<div className="flex flex-col p-4 font-montserrat overlay place-content-between">
-							<button
-								className="ml-auto btn-danger"
-								onClick={() => {
-									const storage = getStorage();
-									const deleteRef = ref(storage, `${file?.name}`);
+				files
+					?.filter((currentFile) => {
+						if (searchTerm === "") {
+							return true;
+						} else {
+							return currentFile.name
+								.toLowerCase()
+								.includes(searchTerm.toLowerCase());
+						}
+					})
+					.map((file) => (
+						<div
+							className="imageContainer dark:filter dark:brightness-[80%] dark:contrast-[1.2] transition-all"
+							key={file.url}
+						>
+							<NextImage
+								className="nextImage"
+								src={file?.url}
+								placeholder="blur"
+								blurDataURL={file.blur}
+								width={`${file?.customMetadata?.width || "500"}`}
+								height={`${file?.customMetadata?.height || "500"}`}
+								alt="Unsplash"
+							/>
+							<div className="flex flex-col p-4 font-montserrat overlay place-content-between">
+								<button
+									className="ml-auto btn-danger"
+									onClick={() => {
+										const storage = getStorage();
+										const deleteRef = ref(storage, `${file?.name}`);
 
-									const del = () => {
-										deleteObject(deleteRef)
-											.then(() => {
-												dispatch(removeFile(file));
-											})
-											.catch((error) => {
-												console.log(error);
-											});
-									};
-									dispatch(setIsDeleteOpen(true));
-									dispatch(setDeleteFileName(file?.name));
-									dispatch(setRemoveFunction(del));
-								}}
-							>
-								Delete
-							</button>
-							<div className="font-bold text-left">{file?.name}</div>
+										const del = () => {
+											deleteObject(deleteRef)
+												.then(() => {
+													dispatch(removeFile(file));
+												})
+												.catch((error) => {
+													console.log(error);
+												});
+										};
+										dispatch(setIsDeleteOpen(true));
+										dispatch(setDeleteFileName(file?.name));
+										dispatch(setRemoveFunction(del));
+									}}
+								>
+									Delete
+								</button>
+								<div className="font-bold text-left">{file?.name}</div>
+							</div>
 						</div>
-					</div>
-				))
+					))
 			);
 		}
-	}, [dispatch, files]);
+	}, [dispatch, files, searchTerm]);
 	const breakpointColumnsObj = {
 		default: 3,
 
@@ -135,26 +146,35 @@ const MasonryContainer = () => {
 		500: 1,
 	};
 	return (
-		<InfiniteScroll
-			dataLength={files.length}
-			next={() => fetchImages(pageToken)}
-			hasMore={pageToken === undefined ? false : true}
-			loader={<LoadingSpinner />}
-			endMessage={
-				<p className="text-2xl text-center dark:text-grayGray-300">
-					You have seen it all!
-				</p>
-			}
-		>
-			<Masonry
-				breakpointCols={breakpointColumnsObj}
-				id="masonry"
-				className="px-5 pt-10 my-masonry-grid"
-				columnClassName="my-masonry-grid_column"
-			>
-				{masonryFiles}
-			</Masonry>
-		</InfiniteScroll>
+		<>
+			{!searchTerm ? (
+				<InfiniteScroll
+					dataLength={files.length}
+					next={() => fetchImages(pageToken)}
+					hasMore={pageToken === undefined ? false : true}
+					loader={<LoadingSpinner />}
+					endMessage={
+						<p className="text-2xl text-center dark:text-grayGray-300">
+							<b>Yay! You have seen it all</b>
+						</p>
+					}
+					style={{ overflow: "hidden" }}
+				>
+					<Masonry
+						breakpointCols={breakpointColumnsObj}
+						id="masonry"
+						className="px-5 pt-10 my-masonry-grid "
+						columnClassName="my-masonry-grid_column"
+					>
+						{masonryFiles}
+					</Masonry>
+				</InfiniteScroll>
+			) : (
+				<Masonry breakpointCols={breakpointColumnsObj} id="masonry">
+					{masonryFiles}
+				</Masonry>
+			)}
+		</>
 	);
 };
 export default MasonryContainer;

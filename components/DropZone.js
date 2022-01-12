@@ -102,7 +102,6 @@ const Dropzone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 			{acceptedFiles.length > 0 ? (
 				<div className="flex space-x-4 place-content-end">
 					<button
-						type="submit"
 						onClick={(e) => {
 							e.preventDefault();
 							dispatch(setIsAddOpen(false));
@@ -132,7 +131,6 @@ const Dropzone = ({ uploadHandler, fileLabel, setFileLabel }) => {
 			) : (
 				<div className="flex space-x-4 place-content-end">
 					<button
-						type="submit"
 						onClick={(e) => {
 							e.preventDefault();
 							dispatch(setIsAddOpen(false));
